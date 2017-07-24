@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URLConnection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,5 +49,14 @@ public class IndexController {
         LOGGER.error("hello logback...");
         modelMap.put("name", "lvfeibiao");
         return "hello";
+    }
+
+    @ResponseBody
+    @RequestMapping("/test")
+    public Object test(String fileName) {
+        Map<String, Object> res = new HashMap<>();
+        String contentType = URLConnection.getFileNameMap().getContentTypeFor(fileName);
+        res.put("contentType", contentType);
+        return res;
     }
 }
