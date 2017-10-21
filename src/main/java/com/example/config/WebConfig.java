@@ -1,6 +1,9 @@
 package com.example.config;
 
 import com.example.filter.DemoFilter;
+import com.xxx.rpc.registry.zookeeper.ZooKeeperServiceRegistry;
+import com.xxx.rpc.server.RpcServer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +18,12 @@ import javax.servlet.Filter;
 @Configuration
 public class WebConfig {
 
+    @Value("${rpc.service_address}")
+    private String serviceAddress;
+
+    @Value("${rpc.registry_address}")
+    private String registryAddress;
+
     @Bean
     public FilterRegistrationBean demoFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
@@ -22,5 +31,16 @@ public class WebConfig {
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }
+
+    @Bean
+    public ZooKeeperServiceRegistry registry() {
+        return new ZooKeeperServiceRegistry(registryAddress);
+    }
+
+    @Bean
+    public RpcServer rpcServer() {
+        return new RpcServer(serviceAddress, registry());
+    }
+
 
 }
