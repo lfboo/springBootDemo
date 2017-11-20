@@ -32,15 +32,4 @@ public class WebConfig {
         return filterRegistrationBean;
     }
 
-    @Bean
-    public ZooKeeperServiceRegistry registry() {
-        return new ZooKeeperServiceRegistry(registryAddress);
-    }
-
-    @Bean
-    public RpcServer rpcServer() {
-        return new RpcServer(serviceAddress, registry());
-    }
-
-
 }
